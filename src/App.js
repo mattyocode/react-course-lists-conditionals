@@ -14,12 +14,28 @@ class App extends Component {
     });
   };
 
+  charDeleteHandler = (event, index) => {
+    let newInput = [...this.state.input];
+    newInput.splice(index, 1);
+    newInput = newInput.join("");
+
+    this.setState({
+      input: newInput,
+    });
+  };
+
   render() {
-    let charsArray = this.state.input.split("");
+    let charsArray = [...this.state.input];
     let chars = (
       <div>
         {charsArray.map((char, index) => {
-          return <CharComponent char={char} key={index} />;
+          return (
+            <CharComponent
+              char={char}
+              key={index}
+              delete={(event) => this.charDeleteHandler(event, index)}
+            />
+          );
         })}
       </div>
     );
@@ -61,6 +77,7 @@ class App extends Component {
         <input
           type="text"
           onChange={(event) => this.inputChangeHandler(event)}
+          value={this.state.input}
         />
         <p>{this.state.input.length}</p>
         <ValidationComponent len={this.state.input.length} />
